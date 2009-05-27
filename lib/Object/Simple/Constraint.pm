@@ -4,9 +4,8 @@ use warnings;
 use strict;
 use Exporter;
 use Carp;
-use Scalar::Util;
 
-our $VERSION = '0.01_01';
+our $VERSION = '0.0201';
 
 our @ISA = 'Exporter';
 our @EXPORT_OK = qw( is_bool is_value is_ref is_str
@@ -16,7 +15,10 @@ our @EXPORT_OK = qw( is_bool is_value is_ref is_str
 
 sub is_bool{ !defined($_[0]) || $_[0] eq "" || "$_[0]" eq '1' || "$_[0]" eq '0' }
 sub is_value{ defined($_[0]) && !ref($_[0]) }
-sub is_num{ !ref($_[0]) && Scalar::Util::looks_like_number($_[0]) }
+sub is_num{
+     require Scalar::Util;
+     !ref($_[0]) && Scalar::Util::looks_like_number($_[0])
+}
 sub is_int{ defined($_[0]) && !ref($_[0]) && $_[0] =~ /^-?[0-9]+$/ }
 sub is_str{ defined($_[0]) && !ref($_[0]) }
 sub is_scalar_ref{ ref($_[0]) eq 'SCALAR' }
@@ -27,12 +29,16 @@ sub is_regexp_ref{ ref($_[0]) eq 'Regexp' }
 sub is_glob_ref{ ref($_[0]) eq 'GLOB' }
 
 sub is_file_handle{
+    require Scalar::Util;
     ref($_[0]) eq 'GLOB' && Scalar::Util::openhandle($_[0])
     or
     Scalar::Util::blessed($_[0]) && $_[0]->isa("IO::Handle")
 }
 
-sub is_object{ Scalar::Util::blessed($_[0]) && Scalar::Util::blessed($_[0]) ne 'Regexp' }
+sub is_object{
+    require Scalar::Util;
+    Scalar::Util::blessed($_[0]) && Scalar::Util::blessed($_[0]) ne 'Regexp' 
+}
 sub is_class_name{ defined($_[0]) && $_[0] =~ /^(\w+::)*\w+$/ }
 sub isa{ eval{ $_[0]->isa( $_[1] ) } }
 
@@ -42,7 +48,7 @@ Object::Simple::Constraint - Constraint functions for Object::Simple;
 
 =head1 VERSION
 
-Version 0.01_01
+Version 0.0201
 
 Object::Simple::Constraint is experimental stage. some function will be change.
 
