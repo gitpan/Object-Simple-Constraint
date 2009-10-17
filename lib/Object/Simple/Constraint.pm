@@ -5,7 +5,7 @@ use strict;
 use Exporter;
 use Carp;
 
-our $VERSION = '0.0201';
+our $VERSION = '0.0301';
 
 our @ISA = 'Exporter';
 our @EXPORT_OK = qw( is_bool is_value is_ref is_str
@@ -44,13 +44,15 @@ sub isa{ eval{ $_[0]->isa( $_[1] ) } }
 
 =head1 NAME
 
-Object::Simple::Constraint - Constraint functions for Object::Simple;
+Object::Simple::Constraint - Constraints for Object::Simple [DISCOURAGED]
 
 =head1 VERSION
 
-Version 0.0201
+Version 0.0301
 
-Object::Simple::Constraint is experimental stage. some function will be change.
+=head1 CAUTION
+
+This module is discouraged now, because I feel L<Object::Simple> do not need constraint funstions
 
 =cut
 
